@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>A-Frame Scene Fix</title>
+        <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    </head>
+    <body>
+        <a-scene>
+          <a-assets>
+            <img id="img9" src="https://cdn.glitch.global/61a3bfa5-05a8-496f-833f-9610f177b14c/coding%20folder%2F9.PNG?v=1740557103866">
+            <img id="img18" src="https://cdn.glitch.global/61a3bfa5-05a8-496f-833f-9610f177b14c/coding%20folder%2F18.PNG?v=1740557135182">
+            <img id="img42" src="https://cdn.glitch.global/61a3bfa5-05a8-496f-833f-9610f177b14c/coding%20folder%2F42.PNG?v=1740557165005">
+            <img id="watermap" src="https://cdn.glitch.global/74018648-0b9e-4763-ac2d-316d83375937/watermapnormalmap.jpg?v=1740592357453">
+            <a-asset-item id="Project1" src="https://cdn.glitch.me/74018648-0b9e-4763-ac2d-316d83375937/Project1.obj?v=1740587781016"></a-asset-item>
+            <video id="myVideo" src="https://cdn.glitch.me/74018648-0b9e-4763-ac2d-316d83375937/Untitled%20Project.mov?v=1740589264118"></video>
+            <a-asset-item id="flower.gltf" src="https://cdn.glitch.global/74018648-0b9e-4763-ac2d-316d83375937/flower.gltf?v=1740557165202"></a-asset-item>       
+</a-assets>
+           <!-- Lights -->
+        <a-light type="ambient" intensity="1.5"></a-light>
+        <a-light type="directional" position="2 3 1" intensity="2"></a-light>
+
+
+          <!-- Light to prevent black images -->
+          <a-light type="ambient" intensity="1.5"></a-light>
+          <a-light type="directional" position="1 2 1" intensity="1"></a-light>
+
+          <!-- Transparent Images -->
+          <a-image src="#img9"
+                   position="2 5 -12"
+                   width="0.5"
+                   height="1"
+                   scale="6 6 6"
+                   transparent="true"
+                   rotation="0 -15 0"></a-image>
+          <a-image src="#img18"
+                   position="-5 5 -11"
+                   scale="4 4 4"
+                   rotation="0 35 0"
+                   transparent="true"></a-image>
+          <a-image src="#img42"
+                   position="-5 1.4 -9"
+                   width="0.5"
+                   scale="6 6 6"
+                   transparent="true"
+                   rotation="10 10 0"></a-image>
+          <a-entity obj-model="obj: #Project1;"
+          position="2 0 -12"
+          scale="4 4 4"
+          rotation="-5 250 -1"></a-entity>
+            <a-entity obj-model="obj: #Project1;"
+          position="-7 0 -11"
+          scale="3.5 4 4"
+          rotation="-2 -320 1"> 
+              <a-entity gltf-model="#flower.gltf"
+          position="0 1 -5"
+          scale="2 2 2"
+          rotation="0 180 0"
+          material="color: red"                           
+          shadow="cast: true; receive: true;">
+</a-entity>
+</a-entity>
+           
+          
+        
+        
+          <!-- Sunset Sky -->
+        <a-sky color="#eeaf61"></a-sky>
+
+        <!-- Lighting -->
+        <a-light type="ambient" color="#ff9966" intensity="1.2"></a-light>
+        <a-light type="directional" color="#ffcc99" position="2 5 -3" intensity="1.5"></a-light>
+
+        <a-entity id="sun" geometry="primitive: sphere; radius: 1.5"
+          position="-10 10 -20"
+          material="shader: standard; color: #ffcc99; emissive: #ffb347; emissiveIntensity: 2"
+          animation="property: position; 
+                     from: -10 10 -20; 
+                     to: 10 -2 -20; 
+                     dur: 20000; 
+                     easing: easeInOutSine; 
+                     loop: true;
+                     dir:alternate">
+</a-entity>
+
+<a-light id="sunlight" type="directional" color="#ffcc99" position="-10 10 -20" intensity="1.5"
+         animation="property: position; 
+                    from: -10 10 -20; 
+                    to: 10 -2 -20; 
+                    dur: 20000; 
+                    easing: easeInOutSine; 
+                    loop: true">
+</a-light>
+
+         
+          <!-- clickable video -->
+        <a-video id="videoScreen"
+                 src="#myVideo"
+                 width="6"
+                 height="3"
+                 position="0 2.5 -10"
+                 play-on-click>
+        </a-video>
+          
+     <a-plane src="#watermap"
+         rotation="-90 0 0"
+         position="0 -3 0"
+         width="100"
+         height="100"
+         material="color: #ADD8E6; opacity: 0.3; repeat: 10 10;"
+         animation="property: material.offset;
+                    from: 0 0;
+                    to: 1 1;
+                    dur: 30000;
+                    loop: true;
+                    easing: linear;
+                    dir: alternate;">
+</a-plane>
+
+          <!-- Camera setup -->
+          <a-camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+          </a-camera>
+
+          <!-- Box with a Circle Inside -->
+          <a-box color="#ffb5c0" width="8" height="4.5" depth="0.2" position="0 3 -11">
+              <a-circle color="#FFFFCC" side="double" position="3 2 0.20"></a-circle>
+          </a-box>
+
+          <!-- Standalone Circle -->
+          <a-circle color="#FFFFCC" side="double" position="-4.5 2 -10.89" scale="1.5 1.7 2"></a-circle>
+
+        </a-scene>
+      
+    <script>
+        AFRAME.registerComponent('play-on-click', {
+            init: function () {
+                let video = document.querySelector("#myVideo");
+                this.el.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+            }
+        });
+    </script>
+    </body>
+</html>
